@@ -1,7 +1,11 @@
+
+
+
 // "use client";
 
 // import { useState } from "react";
 // import { useRouter } from "next/navigation";
+// import Link from "next/link";
 
 // export default function LoginPage() {
 //   const router = useRouter();
@@ -68,15 +72,18 @@
 //         <button className="w-full bg-blue-600 text-white p-3 rounded font-semibold">
 //           Login
 //         </button>
+
+//         {/* 👇 REGISTER LINK ADDED */}
+//         <p className="mt-4 text-sm text-center">
+//           Don’t have an account?{" "}
+//           <Link href="/register" className="text-blue-600 font-semibold hover:underline">
+//             Register
+//           </Link>
+//         </p>
 //       </form>
 //     </div>
 //   );
 // }
-
-
-
-
-
 
 
 
@@ -99,6 +106,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export default function LoginPage() {
   const router = useRouter();
 
@@ -110,25 +119,29 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
 
-    const res = await fetch("http://localhost:5000/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      setError(data.message || "Login failed");
-      return;
+      if (!res.ok) {
+        setError(data.message || "Login failed");
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      router.push("/dashboard");
+    } catch {
+      setError("Network error. Please check backend connection.");
     }
-
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
-
-    router.push("/dashboard");
   };
 
   return (
@@ -165,7 +178,6 @@ export default function LoginPage() {
           Login
         </button>
 
-        {/* 👇 REGISTER LINK ADDED */}
         <p className="mt-4 text-sm text-center">
           Don’t have an account?{" "}
           <Link href="/register" className="text-blue-600 font-semibold hover:underline">
