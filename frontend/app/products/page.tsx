@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 interface Product {
   _id: string;
@@ -18,7 +19,7 @@ export default function ProductsPage() {
     const fetchProducts = async () => {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/products", {
+      const res = await fetch(`${API_URL}/api/products`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

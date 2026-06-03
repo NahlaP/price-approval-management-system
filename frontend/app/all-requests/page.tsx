@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 interface Product {
   name: string;
   modelNo: string;
@@ -31,7 +32,7 @@ export default function AllRequestsPage() {
     const fetchRequests = async () => {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/price-requests", {
+      const res = await fetch(`${API_URL}/api/price-requests`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

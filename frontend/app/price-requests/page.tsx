@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 interface Product {
   _id: string;
   name: string;
@@ -24,7 +26,7 @@ export default function PriceRequestsPage() {
     const fetchProducts = async () => {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/products", {
+      const res = await fetch(`${API_URL}/api/products`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -43,7 +45,7 @@ export default function PriceRequestsPage() {
 
     const token = localStorage.getItem("token");
 
-    const res = await fetch("http://localhost:5000/api/price-requests", {
+    const res = await fetch(`${API_URL}/api/price-requests`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

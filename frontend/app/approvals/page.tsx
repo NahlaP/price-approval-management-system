@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 interface Product {
   name: string;
   modelNo: string;
@@ -33,7 +34,7 @@ export default function ApprovalsPage() {
     const token = localStorage.getItem("token");
 
     // const res = await fetch("http://localhost:5000/api/price-requests", {
-    const res = await fetch("http://localhost:5000/api/price-requests/pending", {
+    const res = await fetch(`${API_URL}/api/price-requests/pending`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -50,7 +51,7 @@ export default function ApprovalsPage() {
   const approveRequest = async (id: string) => {
     const token = localStorage.getItem("token");
 
-    await fetch(`http://localhost:5000/api/price-requests/${id}/approve`, {
+    await fetch(`${API_URL}/api/price-requests/${id}/approve`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -63,7 +64,7 @@ export default function ApprovalsPage() {
   const rejectRequest = async (id: string) => {
     const token = localStorage.getItem("token");
 
-    await fetch(`http://localhost:5000/api/price-requests/${id}/reject`, {
+    await fetch(`${API_URL}/api/price-requests/${id}/reject`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
